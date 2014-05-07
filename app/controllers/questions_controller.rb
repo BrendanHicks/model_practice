@@ -47,17 +47,17 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    number_of_movies_array = Array.new
+    movies_array = Array.new
 
     Actor.all.each do |actor|
 
-      number_of_movies_array << { :count => actor.movies.count, :actor_name => actor.name}
+      movies_array << { :count => actor.movies.count, :actor_name => actor.name}
 
     end
 
-    sort_number_of_movies_array = number_of_movies_array.sort_by {|a| a[:count]}.reverse
-    most_movies_on_list = sort_number_of_movies_array.first[:count]
-    actors_with_most_movies_array = number_of_movies_array.select  {|a| a[:count] == most_movies_on_list}
+    sort_movies_array = movies_array.sort_by {|a| a[:count]}.reverse
+    most_movies_on_list = sort_movies_array.first[:count]
+    actors_with_most_movies_array = movies_array.select  {|a| a[:count] == most_movies_on_list}
 
     final_list_of_actors =[]
 
@@ -67,7 +67,7 @@ class QuestionsController < ApplicationController
 
     end
 
-    @actor_with_the_most_movies = actors_with_most_movies_array
+    @actor_with_the_most_movies = final_list_of_actors
 
 
 
