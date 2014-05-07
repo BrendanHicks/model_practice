@@ -4,7 +4,11 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    # @most_recent_movie_for_second_actor = ???
+    the_actor = Actor.second
+    the_list_of_movies = the_actor.movies.order("year DESC")
+
+
+    @most_recent_movie_for_second_actor = the_list_of_movies.first.title
   end
 
   def question_2
@@ -12,7 +16,10 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    # @director_of_longest_movie = ???
+    longest_movie = Movie.order("duration DESC").first
+
+    @director_of_longest_movie = longest_movie.director.name
+    @number_of_minutes = longest_movie.duration
   end
 
   def question_3
@@ -20,7 +27,16 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    # @director_with_the_most_movies = ???
+    number_of_movies = {}
+
+    Director.all.each do |the_director|
+
+      number_of_movies[the_director.name] = the_director.movies.count
+    end
+
+    sorted_hash_of_directors = number_of_movies.sort_by {|name, number| number}.reverse
+
+    @director_with_the_most_movies = sorted_hash_of_directors.first[0]
   end
 
   def question_4
