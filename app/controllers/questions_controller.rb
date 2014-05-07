@@ -27,16 +27,19 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    number_of_movies = {}
+    number_of_movies_array = Array.new
 
     Director.all.each do |the_director|
 
-      number_of_movies[the_director.name] = the_director.movies.count
+      number_of_movies_array << {"name" => the_director.name, "movie_count" => the_director.movies.count}
+
     end
 
-    sorted_hash_of_directors = number_of_movies.sort_by {|name, number| number}.reverse
+    sorted_hash_of_directors = number_of_movies_array.sort_by {|movies| movies["movie_count"]}.reverse
 
-    @director_with_the_most_movies = sorted_hash_of_directors.first[0]
+
+    @director_with_the_most_movies = sorted_hash_of_directors.first["name"]
+
   end
 
   def question_4
@@ -44,7 +47,30 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    # @actor_with_the_most_movies = ???
+    number_of_movies_array = Array.new
+
+    Actor.all.each do |actor|
+
+      number_of_movies_array << { :count => actor.movies.count, :actor_name => actor.name}
+
+    end
+
+    sort_number_of_movies_array = number_of_movies_array.sort_by {|a| a[:count]}.reverse
+    most_movies_on_list = sort_number_of_movies_array.first[:count]
+    actors_with_most_movies_array = number_of_movies_array.select  {|a| a[:count] == most_movies_on_list}
+
+    final_list_of_actors =[]
+
+    actors_with_most_movies_array.each do |actor|
+
+      final_list_of_actors << actor[:name]
+
+    end
+
+    @actor_with_the_most_movies = actors_with_most_movies_array
+
+
+
   end
 
   def question_5
