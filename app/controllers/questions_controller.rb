@@ -9,6 +9,8 @@ class QuestionsController < ApplicationController
 
 
     @most_recent_movie_for_second_actor = the_list_of_movies.first.title
+
+
   end
 
   def question_2
@@ -63,11 +65,11 @@ class QuestionsController < ApplicationController
 
     actors_with_most_movies_array.each do |actor|
 
-      final_list_of_actors << actor[:name]
+      final_list_of_actors << actor[:actor_name]
 
     end
 
-    @actor_with_the_most_movies = final_list_of_actors
+    @actor_with_the_most_movies = final_list_of_actors*", "
 
 
 
@@ -80,8 +82,36 @@ class QuestionsController < ApplicationController
 
     # Your Ruby goes here.
 
-    # @actor = ???
-    # @director = ???
-    # @movies_together = ???
+    count_with_current_director = 0
+    count_with_most_director = 0
+    director_id_with_most = 0
+    actor_id_with_most = 0
+    test = 0
+
+    Actor.all.each do |actor|
+
+      actor.movies.each do |movie|
+
+        count_with_current_director = actor.movies.where(:director_id => movie.director_id).count
+
+          if count_with_current_director > count_with_most_director
+            count_with_most_director = count_with_current_director
+            actor_id_with_most = actor.id
+            director_id_with_most = movie.director_id
+          end
+
+      end
+
+    end
+
+    test = Actor.find(actor_id_with_most).movies.where(:director_id => director_id_with_most)
+
+
+
+    @actor = Actor.find(actor_id_with_most).name
+    @director = Director.find(director_id_with_most).name
+    @movies_together = Actor.find(actor_id_with_most).movies.where(:director_id => director_id_with_most)
+
   end
+
 end
